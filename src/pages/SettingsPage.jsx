@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useAddEvent, useEvents } from '../integrations/supabase/index.js';
 
 console.log("SettingsPage component rendered");
@@ -17,13 +17,11 @@ const SettingsPage = () => {
     }
   };
 
-  const handleRemoveKeyword = (index) => {
+  const handleRemoveKeyword = useCallback((index) => {
     const removedKeyword = keywords[index];
-    const newKeywords = [...keywords];
-    newKeywords.splice(index, 1);
-    setKeywords(newKeywords);
+    setKeywords((prevKeywords) => prevKeywords.filter((_, i) => i !== index));
     addEvent.mutate({ name: `Removed keyword: ${removedKeyword}`, date: new Date().toISOString() });
-  };
+  }, [keywords]);
 
   // Render loading state
   if (isLoading) return <div>Loading...</div>;
