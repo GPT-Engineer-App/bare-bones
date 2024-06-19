@@ -4,12 +4,18 @@ import App from './App.jsx';
 import './index.css';
 import { SupabaseProvider } from '/src/integrations/supabase/index.js';
 
-console.log("Main component rendered");
+const rootElement = document.getElementById('root');
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-       <SupabaseProvider>
-         <App />
-       </SupabaseProvider>
-     </React.StrictMode>,
-)
+if (rootElement) {
+  console.log("Main component rendered");
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(
+    <React.StrictMode>
+      <SupabaseProvider>
+        <App />
+      </SupabaseProvider>
+    </React.StrictMode>
+  );
+} else {
+  console.error('Root element not found');
+}
