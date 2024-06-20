@@ -10,7 +10,9 @@ export default defineConfig({
       extensions: ['.js', '.jsx'],
       skipPreflightCheck: true,
       plugins: [
-        '@babel/plugin-transform-runtime'
+        ['@babel/plugin-transform-runtime', {
+          'regenerator': true
+        }]
       ]
     })
   ]
