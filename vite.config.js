@@ -18,17 +18,6 @@ export default defineConfig({
       }
     }
   },
-  esbuild: {
-    jsxInject: `import React from 'react'`,
-    loader: 'jsx',
-    include: /src\/.*\.jsx?$/,
-    exclude: [],
-    jsxFactory: 'React.createElement',
-    jsxFragment: 'React.Fragment',
-    target: 'esnext',
-    format: 'esm',
-    logOverride: { 'this-is-undefined-in-esm': 'silent' },
-  },
   optimizeDeps: {
     esbuildOptions: {
       plugins: [

@@ -3,8 +3,6 @@ import { useAddEvent, useEvents } from '../integrations/supabase/index.js';
 
 console.log("SettingsPage component rendered");
 
-console.log("SettingsPage component rendered");
-
 const SettingsPage = () => {
   const [keywords, setKeywords] = useState(['keyword1', 'keyword2']);
   const [newKeyword, setNewKeyword] = useState('');
