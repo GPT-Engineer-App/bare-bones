@@ -8,7 +8,10 @@ export default defineConfig({
     babel({
       babelHelpers: 'runtime',
       extensions: ['.js', '.jsx'],
-      skipPreflightCheck: true
+      skipPreflightCheck: true,
+      plugins: [
+        '@babel/plugin-transform-runtime'
+      ]
     })
   ]
 });
