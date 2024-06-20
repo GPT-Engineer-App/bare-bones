@@ -1,5 +1,5 @@
-console.log("Main component rendered");
 import React from 'react';
+console.log("Main component rendered");
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
