@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import WelcomePage from './pages/WelcomePage';
 import CounterPage from './pages/CounterPage';
@@ -7,7 +7,7 @@ import SettingsPage from './pages/SettingsPage';
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { hasError: false, error: null, errorInfo: null };
   }
 
   static getDerivedStateFromError(error) {
@@ -15,13 +15,22 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
+    this.setState({ error, errorInfo });
     console.error("Error caught in ErrorBoundary: ", error, errorInfo);
   }
 
   render() {
-    console.log("ErrorBoundary rendered");
     if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>;
+      return (
+        <div>
+          <h1>Something went wrong.</h1>
+          <details style={{ whiteSpace: 'pre-wrap' }}>
+            {this.state.error && this.state.error.toString()}
+            <br />
+            {this.state.errorInfo.componentStack}
+          </details>
+        </div>
+      );
     }
 
     return this.props.children; 
@@ -29,7 +38,30 @@ class ErrorBoundary extends React.Component {
 }
 
 function App() {
-  console.log("App component rendered");
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/data');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Router>
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
@@ -47,7 +79,7 @@ function App() {
           </ul>
         </nav>
         <ErrorBoundary>
-          <Suspense fallback={<div>{console.log("Suspense fallback triggered")}Loading...</div>}>
+          <Suspense fallback={<div>Loading...</div>}>
             <Routes>
               <Route path="/" element={<WelcomePage />} />
               <Route path="/counter" element={<CounterPage />} />
