@@ -4,6 +4,28 @@ import WelcomePage from './pages/WelcomePage';
 import CounterPage from './pages/CounterPage';
 import SettingsPage from './pages/SettingsPage';
 
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("Error caught in ErrorBoundary: ", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
+
+    return this.props.children; 
+  }
+}
 
 function App() {
   return (
@@ -20,17 +42,17 @@ function App() {
             <li>
               <Link to="/settings" className="text-white">Settings</Link>
             </li>
-            
           </ul>
         </nav>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
-            <Route path="/" element={<WelcomePage />} />
-            <Route path="/counter" element={<CounterPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            
-          </Routes>
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              <Route path="/" element={<WelcomePage />} />
+              <Route path="/counter" element={<CounterPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
       </div>
     </Router>
   );
