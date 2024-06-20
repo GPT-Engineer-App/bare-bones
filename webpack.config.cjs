@@ -8,7 +8,6 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/',
   },
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -16,7 +15,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -24,24 +23,21 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'postcss-loader',
-        ],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
       },
     ],
   },
   plugins: [
-    new Dotenv(),
     new HtmlWebpackPlugin({
       template: './public/index.html',
-      filename: 'index.html',
     }),
     new MiniCssExtractPlugin(),
+    new Dotenv({
+      path: './.env', // Path to .env file (this is the default)
+      safe: false, // load .env.example (defaults to "false" which does not use dotenv-safe)
+    }),
   ],
   devServer: {
-    historyApiFallback: true,
     static: {
       directory: path.join(__dirname, 'public'),
     },
