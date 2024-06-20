@@ -13,6 +13,7 @@
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.24.7",
     "@babel/runtime": "^7.24.7",
+    "@rollup/plugin-babel": "^5.3.1",
     "@supabase/auth-ui-react": "^0.4.7",
     "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/supabase-js": "^2.43.5",
@@ -29,7 +30,10 @@
     "react-speech-recognition": "^3.10.0"
   },
   "babel": {
-    "presets": ["@babel/preset-env", "@babel/preset-react"],
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
     "plugins": [
       "@babel/plugin-transform-runtime"
     ]
