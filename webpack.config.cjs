@@ -34,7 +34,10 @@ module.exports = {
     new MiniCssExtractPlugin(),
     new Dotenv({
       path: './.env', // Path to .env file (this is the default)
-      safe: false, // load .env.example (defaults to "false" which does not use dotenv-safe)
+      safe: true, // Load '.env.example' to verify the '.env' variables are all set. Can also be a string to a different file.
+      systemvars: true, // Load all system variables as well (useful for CI purposes)
+      silent: true, // Hide any errors
+      defaults: false // Load '.env.defaults' as the default values if empty.
     }),
   ],
   devServer: {
