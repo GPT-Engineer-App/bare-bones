@@ -19,6 +19,7 @@ class ErrorBoundary extends React.Component {
   }
 
   render() {
+    console.log("ErrorBoundary rendered");
     if (this.state.hasError) {
       return <h1>Something went wrong.</h1>;
     }
@@ -28,6 +29,7 @@ class ErrorBoundary extends React.Component {
 }
 
 function App() {
+  console.log("App component rendered");
   return (
     <Router>
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
@@ -45,7 +47,7 @@ function App() {
           </ul>
         </nav>
         <ErrorBoundary>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div>{console.log("Suspense fallback triggered")}Loading...</div>}>
             <Routes>
               <Route path="/" element={<WelcomePage />} />
               <Route path="/counter" element={<CounterPage />} />

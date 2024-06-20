@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+console.log("WelcomePage component rendered");
 const WelcomePage = () => {
   console.log("WelcomePage component rendered");
   return (
