@@ -15,5 +15,10 @@ export default defineConfig({
         }]
       ]
     })
-  ]
+  ],
+  build: {
+    rollupOptions: {
+      external: ['@babel/runtime/regenerator']
+    }
+  }
 });
