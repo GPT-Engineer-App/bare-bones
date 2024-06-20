@@ -1,4 +1,4 @@
-import "../../node_modules/@babel/runtime/regenerator";
+import "../../../node_modules/@babel/runtime/regenerator";
 import { useState, useEffect, createContext, useContext } from 'react';
 import { supabase, SupabaseProvider } from './index.js';
 import { useQueryClient } from '@tanstack/react-query';
