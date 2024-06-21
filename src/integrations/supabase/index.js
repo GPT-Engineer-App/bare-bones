@@ -10,26 +10,11 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 export const queryClient = new QueryClient();
 
 const checkAndCreateEventTable = async () => {
-    const { data, error } = await supabase
-        .from('pg_tables')
-        .select('tablename')
-        .eq('schemaname', 'public')
-        .eq('tablename', 'event');
-
+    const { error } = await supabase.rpc('create_event_table');
     if (error) {
-        console.error('Error checking event table existence:', error);
-        return;
-    }
-
-    if (data.length === 0) {
-        const { error: createError } = await supabase.rpc('create_event_table');
-        if (createError) {
-            console.error('Error creating event table:', createError);
-        } else {
-            console.log('Event table created successfully');
-        }
+        console.error('Error creating event table:', error);
     } else {
-        console.log('Event table already exists');
+        console.log('Event table checked/created successfully');
     }
 };
 
