@@ -1,14 +1,43 @@
 import "../../../node_modules/@babel/runtime/regenerator/index.js";
 import { createClient } from '@supabase/supabase-js';
 import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React, { useEffect } from 'react';
 
 const supabaseUrl = process.env.VITE_SUPABASE_PROJECT_URL;
 const supabaseKey = process.env.VITE_SUPABASE_API_KEY;
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
-import React from "react";
 export const queryClient = new QueryClient();
+
+const checkAndCreateEventTable = async () => {
+    const { data, error } = await supabase
+        .from('pg_tables')
+        .select('tablename')
+        .eq('schemaname', 'public')
+        .eq('tablename', 'event');
+
+    if (error) {
+        console.error('Error checking event table existence:', error);
+        return;
+    }
+
+    if (data.length === 0) {
+        const { error: createError } = await supabase.rpc('create_event_table');
+        if (createError) {
+            console.error('Error creating event table:', createError);
+        } else {
+            console.log('Event table created successfully');
+        }
+    } else {
+        console.log('Event table already exists');
+    }
+};
+
 export function SupabaseProvider({ children }) {
+    useEffect(() => {
+        checkAndCreateEventTable();
+    }, []);
+
     return React.createElement(QueryClientProvider, { client: queryClient }, children);
 }
 
