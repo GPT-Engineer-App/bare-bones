@@ -1,32 +1,24 @@
 import React, { useState, useCallback } from 'react';
-import { useAddEvent, useEvents } from '../integrations/supabase/index.js';
-
-console.log("SettingsPage component rendered");
 
 const SettingsPage = () => {
   const [keywords, setKeywords] = useState(['keyword1', 'keyword2']);
   const [newKeyword, setNewKeyword] = useState('');
-  const { data: events, isLoading, error } = useEvents();
-  const addEvent = useAddEvent();
+  
 
   const handleAddKeyword = () => {
     if (newKeyword.trim() !== '') {
       setKeywords([...keywords, newKeyword.trim()]);
       setNewKeyword('');
-      addEvent.mutate({ name: `Added keyword: ${newKeyword.trim()}`, date: new Date().toISOString() });
+      
     }
   };
 
   const handleRemoveKeyword = useCallback((index) => {
-    const removedKeyword = keywords[index];
+    
     setKeywords((prevKeywords) => prevKeywords.filter((_, i) => i !== index));
-    addEvent.mutate({ name: `Removed keyword: ${removedKeyword}`, date: new Date().toISOString() });
-  }, [keywords]);
+    }, []);
 
-  // Render loading state
-  if (isLoading) return <div>Loading...</div>;
-  // Render error state
-  if (error) return <div>Error: {error.message}</div>;
+  
 
   return (
     <div className="min-h-screen p-4 bg-gray-100">
