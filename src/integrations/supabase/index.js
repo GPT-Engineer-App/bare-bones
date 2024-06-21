@@ -1,4 +1,3 @@
-import "../../../node_modules/@babel/runtime/regenerator/index.js";
 import { createClient } from '@supabase/supabase-js';
 import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
@@ -10,11 +9,18 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 export const queryClient = new QueryClient();
 
 const checkAndCreateEventTable = async () => {
-    const { error } = await supabase.rpc('create_event_table');
-    if (error) {
-        console.error('Error creating event table:', error);
+    const { error: functionError } = await supabase.rpc('create_event_table');
+    if (functionError) {
+        console.error('Error creating event table:', functionError);
     } else {
         console.log('Event table checked/created successfully');
+    }
+
+    const { error: tableError } = await supabase.from('event').select('*').limit(1);
+    if (tableError) {
+        console.error('Error accessing event table:', tableError);
+    } else {
+        console.log('Event table accessed successfully');
     }
 };
 
