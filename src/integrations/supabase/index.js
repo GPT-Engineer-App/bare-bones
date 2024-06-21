@@ -9,18 +9,22 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 export const queryClient = new QueryClient();
 
 const checkAndCreateEventTable = async () => {
-    const { error: functionError } = await supabase.rpc('create_event_table');
-    if (functionError) {
-        console.error('Error creating event table:', functionError);
-    } else {
-        console.log('Event table checked/created successfully');
-    }
+    try {
+        const { error: functionError } = await supabase.rpc('create_event_table');
+        if (functionError) {
+            console.error('Error creating event table:', functionError);
+        } else {
+            console.log('Event table checked/created successfully');
+        }
 
-    const { error: tableError } = await supabase.from('event').select('*').limit(1);
-    if (tableError) {
-        console.error('Error accessing event table:', tableError);
-    } else {
-        console.log('Event table accessed successfully');
+        const { error: tableError } = await supabase.from('event').select('*').limit(1);
+        if (tableError) {
+            console.error('Error accessing event table:', tableError);
+        } else {
+            console.log('Event table accessed successfully');
+        }
+    } catch (error) {
+        console.error('Unexpected error:', error);
     }
 };
 
